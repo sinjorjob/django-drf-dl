@@ -1,0 +1,7 @@
+/drf/appv1/data/bert_fine_tuning_chABSA.pth
+/drf/appv1/data/text.pkl
+/drf/appv1/weights/pytorch_model.bin
+/drf/appv1/__pycache__/
+/drf/appv1/migrations/
+/drf/drf/migrations/
+
