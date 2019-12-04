@@ -23,6 +23,7 @@ class BertPredictSerializer(serializers.Serializer):
         net_trained.load_state_dict(torch.load(MODEL_FILE, map_location='cpu'))
         net_trained.eval()
         print("obj=",obj)
-        input_text = "㈱東急コミュニティーにおいて管理ストックがマンション、ビルともに拡大し増収増益となりました"
-        label = predict2(input_text, net_trained).numpy()[0]
-        return input_text, label
+        print("ojb_input_text=", obj['input_text'])
+        #input_text = "㈱東急コミュニティーにおいて管理ストックがマンション、ビルともに拡大し増収増益となりました"
+        label = predict2(obj['input_text'], net_trained).numpy()[0]
+        return label
