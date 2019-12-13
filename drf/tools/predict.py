@@ -14,7 +14,7 @@ def predict(input_text):
     request = urllib.request.Request(URL, data)
     response = urllib.request.urlopen(request)
     result= json.loads(response.read())
-    return result['neg_pos'][1]	
+    return result['neg_pos']
 
 if __name__ == '__main__':
     print("Start if __name__ == '__main__'")
