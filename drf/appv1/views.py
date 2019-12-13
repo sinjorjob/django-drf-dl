@@ -16,7 +16,6 @@ class BertPredictAPIView(mixins.ListModelMixin,mixins.CreateModelMixin,generics.
     def post(self, request, *args, **kwargs):     
 
         serializer = self.get_serializer(request.data)
-        print("post!!!")
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -24,8 +23,7 @@ class BertPredictAPIView(mixins.ListModelMixin,mixins.CreateModelMixin,generics.
 @api_view(['GET'])
 def bert_predict(request, *args, **kwargs):
     if request.method == 'GET':
-        contents = { str(key):val for key, val in kwargs.items() }
-        print("request.data=", request.data)        
+        contents = { str(key):val for key, val in kwargs.items() }     
         serializer = BertPredictSerializer(data=request.data)
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
