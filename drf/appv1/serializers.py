@@ -1,12 +1,9 @@
 from rest_framework import serializers
-from appv1.config import *	
-from appv1.predict import predict2, create_vocab_text, build_bert_model	
-from IPython.display import HTML, display	
-from appv1.bert import get_config, BertModel,BertForchABSA, set_learned_params	
-	
-import torch	
-import os	
-from django.conf import settings	
+from appv1.config import *  
+from appv1.predict import predict2
+from appv1.bert import get_config, BertModel,BertForchABSA  
+import torch
+import os
 
 
 class BertPredictSerializer(serializers.Serializer):
@@ -16,14 +13,10 @@ class BertPredictSerializer(serializers.Serializer):
     neg_pos = serializers.SerializerMethodField()
 
     def get_neg_pos(self, obj):
-        config_path = os.path.join(settings.BASE_DIR, 'appv1/weights/bert_config.json')	
-        config = get_config(file_path=config_path)
-        net_bert = BertModel(config)
-        net_trained = BertForchABSA(net_bert) # 学習モデルのロード
-        net_trained.load_state_dict(torch.load(MODEL_FILE, map_location='cpu'))
-        net_trained.eval()
-        print("obj=",obj)
-        print("ojb_input_text=", obj['input_text'])
-        #input_text = "㈱東急コミュニティーにおいて管理ストックがマンション、ビルともに拡大し増収増益となりました"
-        label = predict2(obj['input_text'], net_trained).numpy()[0]
+        config = get_config(file_path=BERT_CONFIG)  #bertコンフィグファイルのロード
+        net_bert = BertModel(config)  #BERTモデルの生成
+        net_trained = BertForchABSA(net_bert) # #BERTモデルにネガポジ用分類機を結合
+        net_trained.load_state_dict(torch.load(MODEL_FILE, map_location='cpu'))  #学習済みの重みをロード
+        net_trained.eval()  #推論モードにセット
+        label = predict2(obj['input_text'], net_trained).numpy()[0]  #推論結果を取得
         return label
